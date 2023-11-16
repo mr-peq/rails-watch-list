@@ -1,0 +1,27 @@
+.cards-movie-container-custom {
+  justify-content: space-between;
+  padding-inline: 6em;
+}
+
+.add-btn-container {
+  margin: 1em 6em;
+  align-self: end;
+}
+
+.card-body h5 {
+  font-weight: bold;
+}
+
+.card-title-and-rating-container {
+  display: flex;
+  align-items: baseline;
+  p {
+    margin-left: .5em;
+  }
+}
+
+.container-custom {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
