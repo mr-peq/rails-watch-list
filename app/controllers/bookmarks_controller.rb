@@ -11,7 +11,6 @@ class BookmarksController < ApplicationController
     @movie = Movie.find(params[:bookmark][:movie_id])
     if @bookmark.save
       redirect_to list_path(@list)
-      add_js_events
     else
       render :new, status: :unprocessable_entity
     end
@@ -22,18 +21,11 @@ class BookmarksController < ApplicationController
     @list = @bookmark.list
     @bookmark.destroy
     redirect_to list_path(@list)
-    add_js_events
   end
 
   private
 
   def bookmark_params
     params.require(:bookmark).permit(:movie_id, :comment)
-  end
-
-  def add_js_events
-    respond_to do |format|
-      format.js { render js: 'listShowEvents();' }
-    end
   end
 end
