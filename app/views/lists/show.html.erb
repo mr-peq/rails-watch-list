@@ -15,7 +15,7 @@
 </div>
 <div class="container container-custom" data-controller="toggle">
   <div class="add-btn-container">
-    <div class="btn btn-success" style="float: right; color: white" data-action="click->toggle#showForm">Add a Movie</div>
+    <div class="btn btn-success" style="float: right; color: white" data-action="click->toggle#showAddMovieForm">Add a Movie</div>
   </div>
   <div class="row row-cols-2 cards-movie-container-custom">
     <% @list.bookmarks.each do |bookmark| %>
@@ -41,7 +41,7 @@
     </div>
     <% end %>
   </div>
-  <div data-toggle-target="form" class="d-none">
+  <div data-toggle-target="addMovieForm" class="d-none">
     <%= simple_form_for [@list, @bookmark], html: { style: 'width: 50em; margin-block: 3em;' } do |f| %>
       <%= f.association :movie %>
       <%= f.input :comment %>

@@ -6,11 +6,16 @@ export default class extends Controller {
     console.log("Connected");
   }
 
-  static targets = ["form"];
+  static targets = ["addMovieForm", "createListForm"];
 
-  showForm() {
-    this.formTarget.classList.remove('d-none')
-    this.formTarget.scrollIntoView();
+  showAddMovieForm() {
+    this.addMovieFormTarget.classList.remove('d-none')
+    this.addMovieFormTarget.scrollIntoView();
+  }
+
+  showCreateListForm() {
+    this.createListFormTarget.classList.remove('d-none')
+    this.createListFormTarget.scrollIntoView();
   }
 
 //   const listShowEvents = () => {

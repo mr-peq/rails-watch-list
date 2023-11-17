@@ -1,9 +1,23 @@
-<h1>Lists</h1>
-<%= link_to "Create a List", lists_new_path %>
-<ul>
-<% @lists.each do |list| %>
-  <li>
-    <%= link_to list.name, list_path(list) %>
-  </li>
-<% end %>
-</ul>
+<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Interno_di_un_sala_da_cinema.JPG/1200px-Interno_di_un_sala_da_cinema.JPG);">
+  <div class="container" style="text-align: center;">
+    <h1>Watch-list</h1>
+  </div>
+</div>
+<div class="container container-custom-2" data-controller="toggle">
+  <div class="add-btn-container">
+    <div class="btn btn-success" style="float: right; color: white" data-action="click->toggle#showCreateListForm">Create movie list</div>
+  </div>
+  <div class="cards">
+  <% @lists.each do |list| %>
+    <div class="card-category" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/breakfast.jpg)">
+      <%= list.name %>
+    </div>
+  <% end %>
+  </div>
+  <div data-toggle-target="createListForm" class="d-none">
+    <%= simple_form_for @list, html: { style: 'width: 50em; margin-block: 3em;' } do |f| %>
+      <%= f.input :name %>
+      <%= f.submit 'Create list', class: 'btn btn-success', style: 'color: white;' %>
+    <% end %>
+  </div>
+</div>
