@@ -7,7 +7,7 @@
   </div>
 </nav>
 
-<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url(https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/background.png);">
+<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('<%= cl_image_path @list.photo.key, height: 300, crop: :fill %>');">
   <div class="container" style="text-align: center;">
     <h1><%= @list.name %></h1>
     <div class="btn btn-warning" style="position: absolute; right: 2em; top: 2em; color: white;"><%= @list.movies.count %> movies</div>
@@ -49,9 +49,3 @@
     <% end %>
   </div>
 </div>
-
-<%# <script type="importmap">
-  listShowEvents();
-</script> %>
-
-<%# <%= javascript_include_tag 'example' %>
