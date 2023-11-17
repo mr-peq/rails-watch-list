@@ -13,9 +13,9 @@
     <div class="btn btn-warning" style="position: absolute; right: 2em; top: 2em; color: white;"><%= @list.movies.count %> movies</div>
   </div>
 </div>
-<div class="container container-custom">
+<div class="container container-custom" data-controller="toggle">
   <div class="add-btn-container">
-    <div class="btn btn-success" style="float: right; color: white" id="addMovie">Add a Movie</div>
+    <div class="btn btn-success" style="float: right; color: white" data-action="click->toggle#showForm">Add a Movie</div>
   </div>
   <div class="row row-cols-2 cards-movie-container-custom">
     <% @list.bookmarks.each do |bookmark| %>
@@ -41,9 +41,17 @@
     </div>
     <% end %>
   </div>
-  <%= simple_form_for [@list, @bookmark], html: { class: 'd-none', style: 'width: 50em; margin-block: 3em;' } do |f| %>
-    <%= f.association :movie %>
-    <%= f.input :comment %>
-    <%= f.submit 'Add movie', class: 'btn btn-success', style: 'color: white;' %>
-  <% end %>
+  <div data-toggle-target="form" class="d-none">
+    <%= simple_form_for [@list, @bookmark], html: { style: 'width: 50em; margin-block: 3em;' } do |f| %>
+      <%= f.association :movie %>
+      <%= f.input :comment %>
+      <%= f.submit 'Add movie', class: 'btn btn-success', style: 'color: white;' %>
+    <% end %>
+  </div>
 </div>
+
+<%# <script type="importmap">
+  listShowEvents();
+</script> %>
+
+<%# <%= javascript_include_tag 'example' %>

@@ -4,15 +4,3 @@ import "controllers"
 import "bootstrap"
 import "@popperjs/core"
 
-
-function listShowEvents() {
-  const addMovieBtn = document.getElementById('addMovie');
-  const form = document.getElementById('new_bookmark');
-
-  addMovieBtn.addEventListener('click', () => {
-    form.classList.remove('d-none');
-    form.scrollIntoView();
-  });
-}
-
-listShowEvents();
