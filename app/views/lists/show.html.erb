@@ -17,7 +17,7 @@
   <div class="add-btn-container">
     <div class="btn btn-success" style="position: absolute; right: 0; color: white" data-action="click->toggle#showAddMovieForm">Add a Movie</div>
     <% if flash[:notice] != "" %>
-      <p class="text-danger animation-warning-background"><%= "#{flash[:notice]}" %></p>
+      <div class="text-danger animation-warning-background" style="padding: 0 3em; border-radius: 4px;"><%= "#{flash[:notice]}" %></div>
     <% end %>
   </div>
   <div class="row row-cols-2 cards-movie-container-custom">
