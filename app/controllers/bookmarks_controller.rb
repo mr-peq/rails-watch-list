@@ -5,19 +5,19 @@ class BookmarksController < ApplicationController
   end
 
   def create
-    search = params[:bookmark][:movie]
-    url = "https://api.themoviedb.org/3/search/movie?query=#{search}&include_adult=false&language=en-US&page=1"
-    response = URI.open(url, "Authorization" => 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MTdhZGVhM2I1MWUzY2EyMmNhNDgzZTJhMWFiZmY0OCIsInN1YiI6IjY1NTc3YjNjYjU0MDAyMTRkMTE2ZDhlMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.3Hf3Hgn_N-UKn5ssH0g3db2DArQCQzBH-us1nIE6Lm4', "accept" => 'application/json').read
-    data = JSON.parse(response)
-    movie_title = data['results'].first['original_title']
-    movie_overview = data['results'].first['overview']
-    movie_poster_url = "https://image.tmdb.org/t/p/original/#{data['results'].first['poster_path']}"
-    movie_rating = data['results'].first['vote_average'].to_f
+    data = fetch_movie_data
+    @list = List.find(params[:id])
+    if data['results'].empty?
+      flash[:notice] = 'Sorry, but something went wrong with your search.'
+      redirect_to list_path(@list)
+      return
+    end
+    movie = get_movie_data(data)
 
-    if Movie.exists?(title: movie_title)
-      @movie = Movie.find_by(title: movie_title)
+    if Movie.exists?(title: movie[:title])
+      @movie = Movie.find_by(title: movie[:title])
     else
-      @movie = Movie.create(title: movie_title, overview: movie_overview, poster_url: movie_poster_url, rating: movie_rating)
+      @movie = Movie.create(movie)
     end
 
     @bookmark = Bookmark.new(bookmark_params)
@@ -25,11 +25,13 @@ class BookmarksController < ApplicationController
     @bookmark.list = @list
     @bookmark.movie = @movie
 
-    if @bookmark.save
+    if @bookmark.valid?
+      @bookmark.save
+      flash[:notice] = ''
       redirect_to list_path(@list)
     else
-      # render :new, status: :unprocessable_entity
-      redirect_to controller: :lists, action: :show, status: :unprocessable_entity
+      flash[:notice] = 'Your comment must be 6 characters minimum.'
+      render 'lists/show', status: :unprocessable_entity
     end
   end
 
@@ -44,5 +46,23 @@ class BookmarksController < ApplicationController
 
   def bookmark_params
     params.require(:bookmark).permit(:comment)
+  end
+
+  def fetch_movie_data
+    encoded_search = CGI.escape(params[:bookmark][:movie])
+    search = URI.parse(encoded_search).to_s
+    url = "https://api.themoviedb.org/3/search/movie?query=#{search}&include_adult=false&language=en-US&page=1"
+    options = { 'Authorization' => "Bearer #{ENV['TMDB_ACCESS_TOKEN']}", 'accept' => 'application/json' }
+
+    response = URI.open(url, options).read
+    JSON.parse(response)
+  end
+
+  def get_movie_data(data)
+    title = data['results'].first['title']
+    overview = data['results'].first['overview']
+    poster_url = "https://image.tmdb.org/t/p/original/#{data['results'].first['poster_path']}"
+    rating = data['results'].first['vote_average'].to_f.round(1)
+    { title: title, overview: overview, poster_url: poster_url, rating: rating }
   end
 end

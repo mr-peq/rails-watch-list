@@ -309,7 +309,6 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 7.1.2)
   rails-controller-testing
-  rest-client
   rspec-rails
   sassc-rails
   simple_form

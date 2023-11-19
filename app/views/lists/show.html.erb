@@ -15,7 +15,10 @@
 </div>
 <div class="container container-custom" data-controller="toggle">
   <div class="add-btn-container">
-    <div class="btn btn-success" style="float: right; color: white" data-action="click->toggle#showAddMovieForm">Add a Movie</div>
+    <div class="btn btn-success" style="position: absolute; right: 0; color: white" data-action="click->toggle#showAddMovieForm">Add a Movie</div>
+    <% if flash[:notice] != "" %>
+      <p class="text-danger animation-warning-background"><%= "#{flash[:notice]}" %></p>
+    <% end %>
   </div>
   <div class="row row-cols-2 cards-movie-container-custom">
     <% @list.bookmarks.each do |bookmark| %>
@@ -27,7 +30,7 @@
           <p> • <%= bookmark.movie.rating %></p>
           <i class="fa-solid fa-star" style="color: #ffcb00; height: 1.5em; margin-left: .2em;"></i>
         </div>
-        <p class="card-text"><%= bookmark.movie.overview[..150] %>...</p>
+        <p class="card-text"><%= bookmark.movie.overview[..150] %> ...</p>
         <div style="display: flex; justify-content: space-between;">
           <div style="display: flex; align-items: center;">
             <i class="fa-solid fa-quote-left" style="font-size: 1.5em;">
@@ -35,16 +38,15 @@
             <p style="margin-bottom: 0; margin-left: .7em; font-weight: bold;"><%= bookmark.comment %></p>
           </div>
           <%= link_to "Delete", list_bookmarks_delete_path(bookmark), class: "text-danger",
-          data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}%>
+          data: {turbo_method: :delete}%>
         </div>
       </div>
     </div>
     <% end %>
   </div>
-  <div data-toggle-target="addMovieForm" class="d-none">
+  <div data-toggle-target="addMovieForm" style="align-self: center;">
     <%= simple_form_for [@list, @bookmark], html: { style: 'width: 50em; margin-block: 3em;' } do |f| %>
-
-      <%= f.input :movie %>
+      <%= f.input :movie, hint: 'No special characters.' %>
       <%= f.input :comment %>
       <%= f.submit 'Add movie', class: 'btn btn-success', style: 'color: white;' %>
     <% end %>
